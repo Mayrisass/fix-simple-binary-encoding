@@ -1,6 +1,76 @@
-# Introduction
+# Scope
 
-FIX Simple Binary Encoding (SBE) targets high performance trading
+This document provides the normative specification of Simple Binary Encoding (SBE), which is one of the possible syntaxes for FIX messages, but not limited to FIX messages. The scope comprises the encoding (wire format) and the message schema for SBE.
+
+# Normative references
+
+The following documents are referred to in the text in such a way that some or all of their content constitutes requirements of this document. For dated references, only the edition cited applies. For undated references, the latest edition of the referenced document (including any amendments) applies.
+
+--- IETF RFC 2119 -- *Key words for use in RFCs to Indicate Requirement Levels* March 1997
+
+# Terms and definitions
+
+For the purposes of this document, the terms and definitions given in ISO/IEC 11404 and the following apply.
+
+ISO and IEC maintain terminological databases for use in standardization at the following addresses:
+
+—--	ISO Online browsing platform: available at [https://www.iso.org/obp](https://www.iso.org/obp)
+
+—--	IEC Electropedia: available at [http://www.electropedia.org/](http://www.electropedia.org/)
+
+
+## datatype
+field type with its associated encoding attributes
+
+Note 1 to entry: Includes backing primitive types and valid values or range. Some types
+have additional attributes, e.g. epoch of a date.
+
+## encoding
+message format for interchange
+
+Note 1 to entry: The term is commonly used
+to mean the conversion of one data format to another, such as text to
+binary. However, SBE strives to use native binary
+datatypes in order to make conversion unnecessary, or at least trivial.
+
+Note 2 to entry: Encoding also refers to the act of formatting a message, as opposed to decoding.
+
+## message schema
+metadata that specifies messages and their data types and identifiers
+
+Note 1 to entry: Message schemas may be disseminated out of band.
+
+Note 2 to entry: For SBE, message schemas are expressed as an XML
+document that conforms to an XML schema that is published as part of this standard.
+
+## message template
+metadata that specifies the fields that belong to one particular message type
+
+Note 1 to entry: A message template is contained by a
+message schema.
+
+## session protocol
+protocol concerned with the reliable delivery of messages over a transport.
+
+Note 1 to entry: FIX makes a distinction between
+session protocol and the encoding of a message payload, as described by
+this document. See the [specifications section](https://www.fixtrading.org/standards/) of the FIX Protocol web site
+for supported session protocols and encodings.
+
+## XML schema
+defines the elements and attributes that may appear in an XML document.
+
+Note 1 to entry: The SBE message schema is defined in W3C (XSD) schema
+language since it is the most widely adopted format for XML schemas.
+
+## Specification terms
+These key words in this document are to be interpreted as described in IETF RFC 2119.
+
+# Objectives
+
+## General
+
+SBE targets high performance trading
 systems. It is optimized for low latency of encoding and decoding while
 keeping bandwidth utilization reasonably small. For compatibility, it is
 intended to represent all FIX semantics.
@@ -10,7 +80,7 @@ Thus, it provides a standard for interoperability between communicating
 parties. Users are free to implement the standard in a way that best
 suits their needs. Implementers may use the most appropriate techniques and idioms of programming languages to access data off the wire and manipulate it in applications.
 
-The encoding standard is complimentary to other FIX standards for
+The encoding standard is complementary to other FIX standards for
 session protocol and application level behavior.
 
 ## Binary type system
@@ -18,7 +88,7 @@ session protocol and application level behavior.
 In order to support traditional FIX semantics, all the documented field
 types are supported. However, instead of printable character
 representations of tag-value encoding, the type system binds to native
-binary data types, and defines derived types as needed.
+binary datatypes, and defines derived types as needed.
 
 The binary type system has been enhanced in these ways:
 
@@ -37,7 +107,7 @@ The binary type system has been enhanced in these ways:
 The message design strives for direct data access without complex
 transformations or conditional logic. This is achieved by:
 
--   Usage of native binary data types and simple types derived from
+-   Usage of native binary datatypes and simple types derived from
     native binaries, such as prices and timestamps.
 
 -   Preference for fixed positions and fixed length fields, supporting
@@ -56,43 +126,9 @@ such as constant values.
 Message schemas may be based on standard FIX message specifications or
 may be customized as needed by agreement between counterparties.
 
-## Glossary
-
-**Character set** - A mapping between a sequence of octets and a sequence of characters.
-
-**Data type** - A field type with its associated encoding attributes,
-including backing primitive types and valid values or range. Some types
-have additional attributes, e.g. epoch of a date.
-
-**Encoding** - a message format for interchange. The term is commonly used
-to mean the conversion of one data format to another, such as text to
-binary. However, Simple Binary Encoding strives to use native binary
-data types in order to make conversion unnecessary, or at least trivial.
-Encoding also refers to the act of formatting a message, as opposed to
-decoding.
-
-**Message schema** - metadata that specifies messages and their data
-types and identifiers. Message schemas may be disseminated out of band.
-For Simple Binary Encoding, message schemas are expressed as an XML
-document that conforms to an XML schema that is published as part of
-this standard.
-
-**Message template** - metadata that specifies the fields that belong to
-one particular message type. A message template is contained by a
-message schema.
-
-**Session protocol** - a protocol concerned with the reliable delivery of
-messages over a transport. FIX protocol makes a distinction between
-session protocol and the encoding of a message payload, as described by
-this document. See the [specifications section](https://www.fixtrading.org/standards/) of the FIX protocol web site
-for supported protocols. The original FIX session protocol is known as
-FIXT.
-
-**XML schema** - defines the elements and attributes that may appear in an
-XML document. The SBE message schema is defined in W3C (XSD) schema
-language since it is the most widely adopted format for XML schemas.
-
 ## Documentation
+
+### General
 
 This document explains:
 
@@ -102,28 +138,7 @@ This document explains:
     and relationship to a message header that may be provided by a
     session protocol.
 
--   The Simple Binary Encoding message schema.
-
-### Specification terms
-
-These key words in this document are to be interpreted as described in
-[Internet Engineering Task Force RFC2119](http://www.apps.ietf.org/rfc/rfc2119.html). These terms indicate
-an absolute requirement for implementations of the standard: "**must**",
-or "**required**".
-
-This term indicates an absolute prohibition: "**must not**".
-
-These terms indicate that a feature is allowed by the standard but not
-required: "**may**", "**optional**". An implementation that does not
-provide an optional feature must be prepared to interoperate with one
-that does.
-
-These terms give guidance, recommendation or best practices:
-"**should**" or "**recommended**". A recommended choice among
-alternatives is described as "**preferred**".
-
-These terms give guidance that a practice is not recommended: "**should not**"
-or "**not recommended**".
+-   The SBE message schema.
 
 ### Document format
 
@@ -140,50 +155,3 @@ This is sample data as it would be transmitted on the wire
 
 `10270000`
 
-## References
-
-### Related FIX Standards
-
-[Simple Open Framing Header](https://www.fixtrading.org/standards/fix-sofh/)
-FIX Protocol, Limited. Version 1.0 Draft Standard
-
-[FIX Latest](https://www.fixtrading.org/online-specification/)
-Normative specification of the application layer of the FIX Protocol.
-
-### Dependencies on other standards
-
-SBE is dependent on several industry standards. Implementations must
-conform to these standards to interoperate. Therefore, they are
-normative for SBE.
-
-[IEEE 754-2008](http://ieeexplore.ieee.org/servlet/opac?punumber=4610933) A
-Standard for Binary Floating-Point Arithmetic
-
-[IETF RFC 2978](https://tools.ietf.org/html/rfc2978)
-IANA Charset Registration Procedures. See [Character Sets](https://www.iana.org/assignments/character-sets/character-sets.xml)
-
-[ISO 639-1:2002](http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=22109)
-Codes for the representation of names of languages - Part 1: Alpha-2
-code
-
-[ISO 3166-1:2013](http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=63545)
-Codes for the representation of names of countries and their
-subdivisions - Part 1: Country codes
-
-[ISO 4217:2015](https://www.iso.org/standard/64758.html)
-Codes for the representation of currencies and funds
-
-[ISO 8601:2004](http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=40874)
-Data elements and interchange formats - Information interchange -
-Representation of dates and times
-
-[ISO/IEC 8859-1:1998](https://www.iso.org/standard/28245.html)
-8-bit single-byte coded graphic character sets -- Part 1: Latin alphabet No. 1
-
-[ISO 10383:2012](http://www.iso.org/iso/home/store/catalogue_tc/catalogue_detail.htm?csnumber=61067)
-Securities and related financial instruments - Codes for exchanges and
-market identification (MIC)
-
-*W3C XML Schema version 1.0* [Part 1](https://www.w3.org/TR/xmlschema-1/) [Part 2](https://www.w3.org/TR/xmlschema-2/)
-
-[W3C XML Inclusions (XInclude) Version 1.0](https://www.w3.org/TR/xinclude/)

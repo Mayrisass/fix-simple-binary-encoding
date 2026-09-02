@@ -1,5 +1,7 @@
 # Examples
 
+## General
+
 The example messages are preceded by Simple Open Framing Header. Note
 that SOFH encoding is always big-endian, regardless of the byte order of
 the SBE message body. See that FIX standard for details.
@@ -135,6 +137,8 @@ Not all FIX enumeration values are listed in the samples.
 ```
 
 ## Flat, fixed-length message
+
+### General
 
 This is an example of a simple, flat order message without repeating
 groups or variable-length data.
